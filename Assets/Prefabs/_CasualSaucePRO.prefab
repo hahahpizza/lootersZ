@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2020022513509651447
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2020022513509651446}
+  - component: {fileID: 1919073060160584393}
+  - component: {fileID: 5407868507961210756}
+  m_Layer: 0
+  m_Name: _CasualSaucePRO
+  m_TagString: Untagged
+  m_Icon: {fileID: 2800000, guid: e4e740c76f4e942e08eca71215073a2e, type: 3}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2020022513509651446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020022513509651447}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1919073060160584393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020022513509651447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56e80e7bff3414a3d904a6f962cb64f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5407868507961210756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020022513509651447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a3850a095ec438fb42e3ddcc2ef3c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 0
+  levelScore: {fileID: 0}
+  frameRate: 60
+  skyRotSpeed: 2
+  pointer: {fileID: 0}
+  pointHolder: {fileID: 0}
+  startUI: {fileID: 0}
+  ingameUI: {fileID: 0}
+  loaderUI: {fileID: 0}
+  winUI: {fileID: 0}
+  loseUI: {fileID: 0}
+  appreciateImage: {fileID: 0}
+  appreciateSprites:
+  - {fileID: 21300000, guid: 03c721a528e5e45cf9f02aa831c7240f, type: 3}
+  - {fileID: 21300000, guid: 92bbec5a687254396955d2805a59ea40, type: 3}
+  - {fileID: 21300000, guid: 242c6a45e2bf54aed956c45ab76ca026, type: 3}
+  - {fileID: 21300000, guid: 44c1327efdac1477c922657ff119b89c, type: 3}
+  - {fileID: 21300000, guid: 60af46958297047eaab383379e1dc5ed, type: 3}
+  - {fileID: 21300000, guid: 35b04a3b246fd4295bf0976f1ae0595b, type: 3}
+  flashOnAppreciate: 1
+  appreciateAnim: {fileID: 0}
+  flashOnMiniAppr: 1
+  apprMiniAnim: {fileID: 0}
+  confettiMain: {fileID: 0}
+  conf1: {fileID: 0}
+  conf2: {fileID: 0}
+  conf3: {fileID: 0}
+  conf4: {fileID: 0}
+  camAnim: {fileID: 0}
+  flasherAnim: {fileID: 0}
+  flashOnSlowMoOn: 1
+  flashOnSlowMoOff: 1
