@@ -12,9 +12,7 @@ public class SafeBase : MonoBehaviour
     }
    
     void OnMouseDown()
-    {
-         
+    {         
         _gameManager.OnMouseEventByClickObjs(to);
-
     }
 }

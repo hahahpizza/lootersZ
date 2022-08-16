@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    protected List<GameObject> GetChildrens(GameObject parent)
+    public List<GameObject> GetChildrens(GameObject parent)
     {
         List<GameObject> objs = new List<GameObject>();
         int cnt = parent.transform.childCount;
@@ -228,8 +228,8 @@ public class GameManager : MonoBehaviour
             //if (child.CompareTag(compareTag))
             {
                 Vector3 v3 = child.transform.position;
-                v3.x = child.transform.position.x + UnityEngine.Random.Range(-1.5f, 1.5f);
-                v3.z = child.transform.position.z + UnityEngine.Random.Range(-1.5f, 1.5f);
+                v3.x = child.transform.position.x + UnityEngine.Random.Range(-0.5f, 0.5f);
+                v3.z = child.transform.position.z + UnityEngine.Random.Range(-0.5f, 0.5f);
                 v3.y = -1.2f;
                 child.transform.position = v3;
                 child.transform.SetParent(to_.transform, true);
@@ -250,8 +250,8 @@ public class GameManager : MonoBehaviour
                 if (child.CompareTag(compareTag))
                 {
                     Vector3 v3 = child.transform.position;
-                    v3.x = child.transform.position.x + UnityEngine.Random.Range(-1.5f, 1.5f);
-                    v3.z = child.transform.position.z + UnityEngine.Random.Range(-1.5f, 1.5f);
+                    v3.x = child.transform.position.x + UnityEngine.Random.Range(-0.5f, 0.5f);
+                    v3.z = child.transform.position.z + UnityEngine.Random.Range(-0.5f, 0.5f);
                     v3.y = -1.2f;
                     child.transform.position = v3;
                     child.transform.SetParent(to_.transform, true);
@@ -278,8 +278,8 @@ public class GameManager : MonoBehaviour
                     //v3.x = v3.x - 5.0f;
                     
                     Vector3 v3 = to_.transform.position;
-                    v3.x = to_.transform.position.x + UnityEngine.Random.Range(-1.5f, 1.5f);
-                    v3.z = to_.transform.position.z + UnityEngine.Random.Range(-1.5f, 1.5f);
+                    v3.x = to_.transform.position.x + UnityEngine.Random.Range(-0.5f, 0.5f);
+                    v3.z = to_.transform.position.z + UnityEngine.Random.Range(-0.5f, 0.5f);
                     v3.y = to_.transform.position.y;
                     child.transform.position = v3; 
                     child.transform.SetParent(to_.transform, true);
@@ -308,11 +308,7 @@ public class GameManager : MonoBehaviour
         Animation anim = animObj.GetComponent<Animation>();
         anim.Play("Armature|" + type);
     }
-    public void OnArrivedBasePlatform(string who)
-    {
-        string storeName = this.GetBaseNameByPlayer(who);
-        ChangeParent1(who, storeName, "Coin");
-    }
+    
 
     int Looter2Money(int[] looters)
     {
@@ -379,6 +375,12 @@ public class GameManager : MonoBehaviour
         }
     }
    
+    public void OnArrivedBasePlatform(string who)
+    {
+        string storeName = this.GetBaseNameByPlayer(who);
+        ChangeParent1(who, storeName, "Coin");
+    }
+
     public void OnArrivedTargetPlatform(string who, string from, string to, bool isCollid)
     {
         colls = new List<string>(); 
@@ -423,11 +425,11 @@ public class GameManager : MonoBehaviour
         //    }
         //}
 
-        string temp = "";
-        for (int i = 0; i < 4; i++)
-        {
-            temp += isCollids[i] + ", ";
-        } 
+        // string temp = "";
+        // for (int i = 0; i < 4; i++)
+        // {
+        //     temp += isCollids[i] + ", ";
+        // } 
           
         for (int i = 0; i < 4; i++)
         {

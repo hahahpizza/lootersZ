@@ -92,7 +92,7 @@ public class Action : MonoBehaviour
         if (isCollid)
         {
             //float dis = _gameManager.GetShortDis(_name);
-            float range = 2.00f;
+            float range = 0.50f;
             Vector3 pos;
             pos.x = _end.x + UnityEngine.Random.Range(-range, range);
             pos.y = _end.y;
@@ -123,8 +123,8 @@ public class Action : MonoBehaviour
             for (int j = 0; j < cnt; j++)
             {
                 Vector3 v3 = looterPos.position;
-                v3.x = looterPos.position.x + UnityEngine.Random.Range(-1.5f, 1.5f);
-                v3.z = looterPos.position.z + UnityEngine.Random.Range(-1.5f, 1.5f);
+                v3.x = looterPos.position.x + UnityEngine.Random.Range(-0.5f, 0.5f);
+                v3.z = looterPos.position.z + UnityEngine.Random.Range(-0.5f, 0.5f);
                 GameObject clone = GameObject.Instantiate(looters[i], v3, Quaternion.identity, this.transform) as GameObject;
                 float scale = 1 + j * 0.1f;                
                 clone.transform.localScale = new Vector3(scale, scale, scale);                 

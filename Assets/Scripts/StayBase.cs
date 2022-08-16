@@ -18,25 +18,27 @@ public class StayBase : MonoBehaviour
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    public void SetMoney(int[] looters)
+    public void SetLooters(int[] looters)
     {
         this._looters = looters;
-        foreach (Transform child in transform)
-        {
-            GameObject obj = child.gameObject;
-            obj.SetActive(false);
-            DestroyImmediate(obj);
+        List<GameObject> childs = _gameManager.GetChildrens(this.gameObject);
+        // foreach (Transform child in transform)
+        foreach (GameObject child in childs)
+        { 
+            child.SetActive(false);
+            DestroyImmediate(child);
         }
     }
 
     public void SetMoney(int n)
     {
         this._looters = new int[4] { 0,0,0,0 };
-        foreach (Transform child in transform)
-        {
-            GameObject obj = child.gameObject;
-            obj.SetActive(false);
-            DestroyImmediate(obj);
+        List<GameObject> childs = _gameManager.GetChildrens(this.gameObject);
+        // foreach (Transform child in transform)
+        foreach (GameObject child in childs)
+        { 
+            child.SetActive(false);
+            DestroyImmediate(child);
         }
     }
 
