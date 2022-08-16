@@ -3,7 +3,7 @@ using UnityEngine;
 public class SafeBase : MonoBehaviour
 { 
     GameManager _gameManager;
-    public string to;
+    string to;
 
     void Start()
     {

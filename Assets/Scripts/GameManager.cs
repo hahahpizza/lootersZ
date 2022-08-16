@@ -9,35 +9,36 @@ public class GameManager : MonoBehaviour
     public GameObject[] coins;
     public GameObject[] boards;
     public GameObject[] safezones;
-    public List<Vector3> abs_board_positions;
-    public List<Vector3> abs_coin_positions;
-    public List<Vector3> abs_sz_positions;
-    public bool _exit = false;
-    public int signals = 0;
-    public int round = 0;
-    public int round_limit = 5;
-    bool _isStart = false;
-    bool[] isCollids ;
     public int[] moneyArr;
-
-    string[] froms  ;
-    string[] tos  ;
-    string[] whos ;
-    List<string> colls;
-    public float _tim = 0.0f;
+    List<Vector3> abs_board_positions;
+    List<Vector3> abs_coin_positions;
+    List<Vector3> abs_sz_positions;
+    bool _exit = false;
+    int signals = 0;
+    int round = 0;
+    int round_limit = 5;
+    bool _isStart = false;
+    
+    string[] froms;
+    string[] tos;
+    string[] whos;     
+    float _tim = 0.0f;
     string log2;
-    public float hSliderValue;
+    float hSliderValue;
+
+    List<int[]> lootersArr ;
+    bool[] isCollids;
 
     private void Start()
     {
         abs_board_positions = new List<Vector3>();
         abs_coin_positions = new List<Vector3>();
-        abs_sz_positions = new List<Vector3>();
-        colls = new List<string>();
-        isCollids = new bool[4] { false, false, false, false };
+        abs_sz_positions = new List<Vector3>();      
         whos = new string[4] { "bot1", "bot2", "bot3", "user" };
         froms = new string[4];
         tos = new string[4];
+        lootersArr = new List<int[]>();
+        isCollids = new bool[4] { false, false, false, false };
 
         foreach (GameObject player in players)
         {
@@ -61,7 +62,7 @@ public class GameManager : MonoBehaviour
             pos.y = abs_board_positions[0].y;
             abs_sz_positions.Add(pos);
         }
-        SetCoinLootes();//init 
+        SetCoinLooters();//init 
     }
 
     public int[] GetPrices()
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    void SetCoinLootes()
+    void SetCoinLooters()
     {
         GameObject.Find("coin1").GetComponent<CoinBase>().SetLooters(new int[4] { 1, 0, 0, 0 });
         GameObject.Find("coin2").GetComponent<CoinBase>().SetLooters(new int[4] { 0, 1, 0, 0 });
@@ -124,13 +125,7 @@ public class GameManager : MonoBehaviour
             GameObject.Find("coin" + i).transform.position = pos;
         }
     }
-
-    //void Swap(int i, int j)
-    //{
-    //    Vector3 temp = abs_coin_positions[i];
-    //    abs_coin_positions[i] = abs_coin_positions[j];
-    //    abs_coin_positions[j] = temp;
-    //}
+ 
      
 
     public int Count()
@@ -310,7 +305,7 @@ public class GameManager : MonoBehaviour
     }
     
 
-    int Looter2Money(int[] looters)
+    int Looters2Money(int[] looters)
     {
         int res = 0;
         for (int i = 0; i < 4; i++)
@@ -333,107 +328,71 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         if( _isStart )
-        _tim += Time.deltaTime; 
-        if (_tim > 1.5f && _isStart)
-        { 
-            for (int i = 0; i < 4; i++)
-            {
-                string from_ = froms[i];
-                string to_ = tos[i];
-                string who_ = whos[i];
-                AnimationPlay(who_, "JumpFalling");
-                string baseName = GetBaseNameByPlayer(who_);
-                int[] looters = GameObject.Find(baseName).GetComponent<StayBase>().GetLooters();
-                GameObject.Find(who_).GetComponent<Action>().RunBack(to_, from_, looters);
-            }
-            SetCoinLootes();
-            signals = 0;
-            ////// for debug /////////
-            for (int i = 0; i < 99999999; i++)
-            {
-                //TODO: animation
-            }
-            int len = colls.Count;
-            for (int i = 0; i < len; i++)
-            {
-                string coll1 = colls[i];
-                for (int j = 0; j < len; j++)
+        {
+            _tim += Time.deltaTime; 
+            if ( _tim > 1.5f )
+            { 
+                for (int i = 0; i < 4; i++)
                 {
-                    string coll2 = colls[j];
-                    if (i != j && coll1 == coll2)
-                        colls[j] = "remove";
+                    string from_ = froms[i];
+                    string to_ = tos[i];
+                    string who_ = whos[i];
+                    bool isColl_ = isCollids[i];
+                    int[] looters = lootersArr[i];
+                    AnimationPlay(who_, "JumpFalling");
+                    string baseName = GetBaseNameByPlayer(who_);
+                    // int[] looters = GameObject.Find(baseName).GetComponent<StayBase>().GetLooters();
+
+                    if(isColl_) looters = new int[4]{0,0,0,0};
+                    GameObject.Find(who_).GetComponent<Action>().RunBack(to_, from_, looters);
                 }
+                SetCoinLooters();
+                isCollids = new bool[4]{false, false, false, false}; 
+                lootersArr = new List<int[]>();
+                signals = 0;
+                _tim = 0;
+                _isStart = false;
             }
-            log2 = "";
-            colls.Remove("remove");
-            foreach (string s in colls)
-                log2 += s + "\n";
-            log += "\n" + log2;
-            ////// for debug /////////
-            _tim = 0;
-            _isStart = false;
         }
     }
    
+
+    string GetStayBaseBySafeBase(string safebase)
+    {
+        switch(safebase)
+        {
+            case "safezone1": return "bd1";
+            case "safezone2": return "bd2";
+            case "safezone3": return "bd3";
+            case "safezone4": return "bd4";
+            default: return string.Empty;
+        }
+    }
+
     public void OnArrivedBasePlatform(string who)
     {
         string storeName = this.GetBaseNameByPlayer(who);
         ChangeParent1(who, storeName, "Coin");
     }
-
-    public void OnArrivedTargetPlatform(string who, string from, string to, bool isCollid)
-    {
-        colls = new List<string>(); 
+ 
+ 
+  public void OnArrivedTargetPlatform(string who, string from, string to, bool isCollid)
+    {  
         AnimationPlay(who, "JumpLanding");
-        log += "\n" + who + " -> " + to;
-        switch (to)
+        log += "\n" + who + ">" + to + "(" + isCollid + ")";
+        if(to.Contains("safezone"))
         {
-            case "safezone1": GameObject.Find("bd1").GetComponent<StayBase>().SetSafeLooters(); break;
-            case "safezone2": GameObject.Find("bd2").GetComponent<StayBase>().SetSafeLooters(); break;
-            case "safezone3": GameObject.Find("bd3").GetComponent<StayBase>().SetSafeLooters(); break;
-            case "safezone4": GameObject.Find("bd4").GetComponent<StayBase>().SetSafeLooters(); break;
-            default: break;
-        }
+            string staybase = GetStayBaseBySafeBase(to);
+            GameObject.Find(staybase).GetComponent<StayBase>().SetSafeLooters();
+        } 
         signals++;
         int index = GetIndexPlayer(who);
         froms[index] = from;
-        tos[index] = to;
+        tos[index] = to;        
         isCollids[index] = isCollid;
-
-        if (signals != 4) return;
-
-        
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    string from_ = froms[i];
-        //    string to_ = tos[i];
-        //    string who_ = whos[i];
-
-        //    for (int j = 0; j < 4; j++)
-        //    {
-        //        string who2 = whos[j];
-        //        string to2 = tos[j];
-        //        if (who_ != who2 && to_ == to2)
-        //        {
-        //            string s = getCollidePlayers(who_, who2);
-        //            colls.Add(s);
-        //            log2 += s;
-        //            isColls[i] = true;
-        //            isColls[j] = true;
-        //        }
-        //        //else isColls[i] = false;
-        //    }
-        //}
-
-        // string temp = "";
-        // for (int i = 0; i < 4; i++)
-        // {
-        //     temp += isCollids[i] + ", ";
-        // } 
-          
+        if (signals != 4) return;  
         for (int i = 0; i < 4; i++)
-        {
-            //string from_ = froms[i];
+        { 
             string to_ = tos[i];
             string who_ = whos[i];
             bool is_Coll = isCollids[i]; 
@@ -443,37 +402,37 @@ public class GameManager : MonoBehaviour
                 GameObject to_obj = GameObject.Find(to_);
                 if (to_.Contains("bd"))
                 {
-                    looters = to_obj.GetComponent<StayBase>().GetLooters();
-                    to_obj.GetComponent<StayBase>().SetMoney(0);
+                    // looters = to_obj.GetComponent<StayBase>().GetLooters();
+                    to_obj.GetComponent<StayBase>().StealedBy(who_); 
+
                 }
                 else if (to_.Contains("coin"))
+                {
                     looters = to_obj.GetComponent<CoinBase>().GetLooters();
-                int money = Looter2Money(looters);
-                //print(money);
+                }
+                
+                int money = Looters2Money(looters);                 
                 if (money == 0)
                     AnimationPlay(who_, "Lose");
                 else
                 {
-                    if (money > 0 && money < 500) AnimationPlay(who_, "HappyIdle");
-
-                    else if(money > 5000 && money < 10000)
-                    {
-                        int random = GetRandomInt(1, 5);
-                        AnimationPlay(who_, "HappyIdle" + random);
-                    } 
-                    else if (money > 10000) AnimationPlay(who_, "Win");
+                    if (money > 0 && money < 5000) AnimationPlay(who_, "HappyIdle");
+                    else if(money >= 5000 && money < 10000)
+                        AnimationPlay(who_, "HappyIdle" + GetRandomInt(1, 5));                     
+                    else if (money >= 10000) AnimationPlay(who_, "Win");
                 }
                 GameObject.Find("bd" + (i + 1)).GetComponent<StayBase>().AddLooters(looters);
+                lootersArr.Add(looters);
             }
             else
             {
+                lootersArr.Add(new int[4] { 0, 0, 0, 0 });
                 int random = GetRandomInt(1, 5);
                 AnimationPlay(who_, "Fight" + random);
             }
-        }
+        }        
         _tim = 0;
-        _isStart = true; 
-
+        _isStart = true;
     }
 
     public Vector3 GetPos(string name)
@@ -522,41 +481,35 @@ public class GameManager : MonoBehaviour
             default: return string.Empty;
         }
     }
-
+ 
     public void OnMouseEventByClickObjs(string to)
     {
+         
         this.Count();
         if (_exit) return;
-
         froms[0] = "bd1";
         froms[1] = "bd2";
         froms[2] = "bd3"; 
         froms[3] = "bd4";
-
         tos[0] = this.GetEnableTarget(1);
         tos[1] = this.GetEnableTarget(2);
         tos[2] = this.GetEnableTarget(3); 
-        tos[3] = to;
-         
+        tos[3] = to;         
         bool[] isColls = new bool[4] { false, false, false, false };
         for (int i = 0; i < 4; i++)
-        { 
-            string to_ = tos[i];
-            string who_ = whos[i];
-
+        {
+            string to1 = tos[i];             
             for (int j = 0; j < 4; j++)
-            {
-                string who2 = whos[j];
+            {                 
                 string to2 = tos[j];
-                if (who_ != who2 && to_ == to2)
+                if (i != j && to1 == to2)
                 {            
                     isColls[i] = true;
                     isColls[j] = true;
-                }                 
+                } 
             }
-        }
-
-        for(int i=0; i< 4; i++)
+        }         
+        for(int i = 0; i < 4; i++)
             players[i].GetComponent<Action>().RunToTarget(froms[i], tos[i], isColls[i]);        
         
     }
@@ -592,13 +545,7 @@ public class GameManager : MonoBehaviour
             default: return string.Empty;
         }
     }
-
-    //int GetRandomInt(int min, int max)
-    //{
-    //    System.Random rnd = new System.Random();
-    //    return rnd.Next(min, max);
-    //}
-
+ 
     void OnGUI()
     {
         bool debug = true;

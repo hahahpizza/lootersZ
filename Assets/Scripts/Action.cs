@@ -6,15 +6,15 @@ public class Action : MonoBehaviour
     public GameObject[] looters;
     public Transform looterPos;
     GameManager _gameManager;
-    public bool _isStart;
-    public Vector3 _start;
-    public Vector3 _end;
-    public float _time = 0;
-    public string _from, _to;
-    public bool _isAgain = false;
-    public bool _defence; 
-    public string log = string.Empty;
-    public string _name;
+    bool _isStart;
+    Vector3 _start;
+    Vector3 _end;
+    float _time = 0;
+    string _from, _to;
+    bool _isAgain = false;
+    bool _defence; 
+    string log = string.Empty;
+    string _name;
     bool _isCollid = false;
 
     void Start()
@@ -70,8 +70,9 @@ public class Action : MonoBehaviour
         return _defence;
     }
     
+    
     public void RunToTarget(string from, string to, bool isCollid)
-    {
+    { 
         _gameManager.AnimationPlay(_name, "JumpFalling"); 
         if (to.Contains("safezone"))
         {
@@ -90,8 +91,7 @@ public class Action : MonoBehaviour
 
         
         if (isCollid)
-        {
-            //float dis = _gameManager.GetShortDis(_name);
+        { 
             float range = 0.50f;
             Vector3 pos;
             pos.x = _end.x + UnityEngine.Random.Range(-range, range);
@@ -104,9 +104,8 @@ public class Action : MonoBehaviour
         _isStart = true;
     }
 
-    public void RunBack(string from, string to, int[] mArr)
-    {
-        //print(from);
+    public void RunBack(string from, string to, int[] looters_)
+    { 
         _time = 0;
         _from = from;
         _to = to; 
@@ -119,7 +118,7 @@ public class Action : MonoBehaviour
         }
         for (int i = 0; i < 4; i++)
         {
-            int cnt = mArr[i];
+            int cnt = looters_[i];
             for (int j = 0; j < cnt; j++)
             {
                 Vector3 v3 = looterPos.position;
@@ -142,9 +141,7 @@ public class Action : MonoBehaviour
             //transform.LookAt(collision.transform, Vector3.up);
             Vector3 rot = collision.transform.eulerAngles;
             rot.y = 180 + collision.transform.eulerAngles.y;
-            this.transform.eulerAngles = rot;
-
-
+            this.transform.eulerAngles = rot; 
         }
     } 
 

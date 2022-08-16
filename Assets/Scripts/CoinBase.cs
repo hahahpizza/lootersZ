@@ -5,8 +5,9 @@ using UnityEngine;
 public class CoinBase : MonoBehaviour
 {
     GameManager _gameManager;
-    public int[] _looters;
-    public string to;
+    int[] _looters;
+    string to;
+
     private void Awake()
     {
         _looters = new int[4];

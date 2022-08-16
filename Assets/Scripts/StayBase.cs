@@ -4,9 +4,10 @@ using UnityEngine;
 public class StayBase : MonoBehaviour
 {
     GameManager _gameManager;
-    public int[] safe_looters;
-    public int[] _looters;
-    public string _name;
+    int[] safe_looters;
+    int[] _looters;
+    string _name;
+    
     private void Awake()
     {
         _looters = new int[4];
@@ -18,27 +19,26 @@ public class StayBase : MonoBehaviour
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    public void SetLooters(int[] looters)
-    {
-        this._looters = looters;
-        List<GameObject> childs = _gameManager.GetChildrens(this.gameObject);
-        // foreach (Transform child in transform)
-        foreach (GameObject child in childs)
-        { 
-            child.SetActive(false);
-            DestroyImmediate(child);
-        }
-    }
+    // public void SetLooters(int[] looters)
+    // {
+    //     this._looters = looters;
+    //     List<GameObject> childs = _gameManager.GetChildrens(this.gameObject);
+    //     foreach (GameObject child in childs)
+    //     { 
+    //         child.SetActive(false);
+    //         DestroyImmediate(child);
+    //     }
+    // }
 
-    public void SetMoney(int n)
+    public void StealedBy(string who)
     {
         this._looters = new int[4] { 0,0,0,0 };
         List<GameObject> childs = _gameManager.GetChildrens(this.gameObject);
-        // foreach (Transform child in transform)
         foreach (GameObject child in childs)
         { 
-            child.SetActive(false);
-            DestroyImmediate(child);
+            // child.SetActive(false);
+            // DestroyImmediate(child);
+            child.transform.SetParent(GameObject.Find(who).transform, true);
         }
     }
 
@@ -72,6 +72,7 @@ public class StayBase : MonoBehaviour
     {
         int[] prices = _gameManager.GetPrices();
         int res = 0;
+          
         for (int i = 0; i < 4; i++)
         {
             res += _looters[i] * prices[i];
