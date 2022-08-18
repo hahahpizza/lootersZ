@@ -1,0 +1,28 @@
+ 
+1.  When you tap the land area, Make sure you do not land into the boxes. 
+	you should land next to it so that they do not collide into each other. 
+	Same goes if there are more than 1 character on the same area.
+
+2.  When we are doing the 1st jump. 
+	Do not make the AI steal anything. 
+	It looks weird. 
+	Same goes to  Jumping in the area where there is no coin on the enemy platform.
+
+3.  When the player jumps on the centre platform, Make them wait for 3 seconds. 
+	The one jumping on the highest loot will play hapy animation in loop.
+	Multiple characters will play fight animations in loop. After that they will fall into the water ( ragdoll ).
+	After 3 seconds, make the player carry the loot on top of head ( making new animations ) and jump back to the their platforms.
+
+4.  Once the players are back to their zones, Spawn new characters in place of dead ones. 
+	Spawn new loot ( shuffle ).
+
+5.  We need 1st level to be just with 1 AI and 1 player.
+
+	Level 02 will be 1 player and 2 AI.
+
+	And level 3 and all after it, 3 AI and 1 player.
+
+6.  Make a variable that will count the Total money that the character has put in the safe zone. 
+	You will win / lose based on the Total money you have saved in the safe zone. 
+	I will add a visual element later which will display the total money you have saved.
+
